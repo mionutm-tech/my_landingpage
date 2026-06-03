@@ -153,7 +153,7 @@ img { display: block; max-width: 100%; }
 }
 .photo-slot .photo-overlay {
   position: absolute; inset: 0; z-index: 2;
-  display: flex; flex-direction: column;
+  display: none; flex-direction: column;
   align-items: center; justify-content: center; gap: 4px;
   background: rgba(0,0,0,.4);
   opacity: 0; transition: opacity .2s var(--ease);
@@ -161,20 +161,23 @@ img { display: block; max-width: 100%; }
   letter-spacing: .1em; text-transform: uppercase;
   pointer-events: none;
 }
+.photo-slot[data-editable] .photo-overlay { display: flex; }
 .photo-slot .photo-overlay svg { opacity: .9; }
-.photo-slot:hover .photo-overlay,
+.photo-slot[data-editable]:hover .photo-overlay,
 .photo-slot[data-dragover] .photo-overlay { opacity: 1; }
 .photo-slot[data-reframe] .photo-overlay { opacity: 0 !important; }
-.photo-slot[data-reframe] { cursor: grab; }
-.photo-slot[data-panning] { cursor: grabbing; }
+.photo-slot[data-editable][data-reframe] { cursor: grab; }
+.photo-slot[data-editable][data-panning] { cursor: grabbing; }
+.photo-slot:not([data-editable]) { cursor: default; }
 .photo-slot .photo-controls {
   position: absolute; bottom: -36px; left: 50%; transform: translateX(-50%);
-  display: flex; gap: 4px; z-index: 3;
+  display: none; gap: 4px; z-index: 3;
   opacity: 0; pointer-events: none;
   transition: opacity .15s var(--ease);
   white-space: nowrap;
 }
-.photo-slot:hover .photo-controls,
+.photo-slot[data-editable] .photo-controls { display: flex; }
+.photo-slot[data-editable]:hover .photo-controls,
 .photo-slot[data-reframe] .photo-controls { opacity: 1; pointer-events: auto; }
 .photo-controls button {
   appearance: none; border: 0; border-radius: 6px;
@@ -503,7 +506,7 @@ img { display: block; max-width: 100%; }
   if (target && typeof qrcode === 'function') {
     try {
       var qr = qrcode(0, 'M');
-      qr.addData('https://www.linkedin.com/in/ionut-muntean-0a9a0650');
+      qr.addData('https://mionutm-tech.github.io/my_landingpage/');
       qr.make();
       var n = qr.getModuleCount();
       var ns = 'http://www.w3.org/2000/svg';
@@ -544,16 +547,16 @@ img { display: block; max-width: 100%; }
     }
   }
 
-  // ── Scroll-cue: hide after user scrolls past hero ──
+  // ── Scroll-cue: toggle visibility based on scroll position ──
   var cue = document.querySelector('.scroll-cue');
   if (cue) {
-    var hidden = false;
     window.addEventListener('scroll', function() {
-      if (hidden) return;
       if (window.scrollY > window.innerHeight * 0.3) {
         cue.style.opacity = '0';
         cue.style.pointerEvents = 'none';
-        hidden = true;
+      } else {
+        cue.style.opacity = '';
+        cue.style.pointerEvents = '';
       }
     }, { passive: true });
   }
@@ -566,9 +569,13 @@ img { display: block; max-width: 100%; }
   var MAX_DIM = 1200;
   var MAX_SCALE = 5;
 
+  var EDIT_MODE = location.search.indexOf('edit') !== -1;
+
   var slot = document.getElementById('photo-slot');
   var img = document.getElementById('photo-img');
   var input = document.getElementById('photo-input');
+
+  if (EDIT_MODE) slot.setAttribute('data-editable', '');
 
   var state = {
     src: null,
@@ -664,7 +671,9 @@ img { display: block; max-width: 100%; }
     });
   }
 
-  // ── Events: click to browse ──
+  // ── Interactive editing (only in ?edit mode) ──
+  if (EDIT_MODE) {
+
   slot.addEventListener('click', function(e) {
     if (e.target.closest('.photo-controls')) return;
     if (slot.hasAttribute('data-reframe')) return;
@@ -675,7 +684,6 @@ img { display: block; max-width: 100%; }
     input.value = '';
   });
 
-  // ── Events: drag & drop ──
   var depth = 0;
   slot.addEventListener('dragenter', function(e) {
     e.preventDefault(); e.stopPropagation();
@@ -698,7 +706,6 @@ img { display: block; max-width: 100%; }
     if (f) ingest(f);
   });
 
-  // ── Events: double-click to enter reframe (crop/pan) mode ──
   slot.addEventListener('dblclick', function(e) {
     e.preventDefault();
     if (slot.hasAttribute('data-reframe')) exitReframe();
@@ -727,7 +734,6 @@ img { display: block; max-width: 100%; }
     saveState();
   }
 
-  // ── Events: pan (drag inside reframe mode) ──
   slot.addEventListener('pointerdown', function(e) {
     if (e.button !== 0) return;
     if (!slot.hasAttribute('data-reframe')) return;
@@ -760,7 +766,6 @@ img { display: block; max-width: 100%; }
     slot.addEventListener('pointercancel', up);
   });
 
-  // ── Events: wheel zoom ──
   slot.addEventListener('wheel', function(e) {
     if (!slot.hasAttribute('data-reframe')) return;
     e.preventDefault();
@@ -773,7 +778,6 @@ img { display: block; max-width: 100%; }
     saveState();
   }, { passive: false });
 
-  // ── Events: pinch-to-zoom (touch) ──
   var lastPinchDist = 0;
   slot.addEventListener('touchstart', function(e) {
     if (e.touches.length === 2 && slot.hasAttribute('data-reframe')) {
@@ -803,7 +807,6 @@ img { display: block; max-width: 100%; }
     saveState();
   });
 
-  // ── Events: control buttons ──
   slot.querySelector('[data-act="replace"]').addEventListener('click', function(e) {
     e.stopPropagation();
     exitReframe();
@@ -817,6 +820,8 @@ img { display: block; max-width: 100%; }
     saveState();
     applyView();
   });
+
+  } // end EDIT_MODE
 
   // ── Init ──
   img.addEventListener('load', function() { clampView(); applyView(); });
