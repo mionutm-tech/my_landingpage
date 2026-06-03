@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Ionuț Marian Muntean — DEKRA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg: #f7f3ec;
+  --surface: #fffdf8;
+  --surface-2: #f1ebe0;
+  --ink: #1b1d1a;
+  --ink-soft: #4a4d46;
+  --muted: #807c72;
+  --hairline: rgba(27, 29, 26, 0.12);
+  --green: #008143;
+  --green-deep: #006b52;
+  --green-ink: #02502f;
+  --mint: #b0fd78;
+  --green-wash: color-mix(in srgb, var(--green) 8%, transparent);
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 22px;
+  --r-xl: 30px;
+  --shadow-sm: 0 1px 2px rgba(27,29,26,.05), 0 4px 14px rgba(27,29,26,.05);
+  --shadow-md: 0 2px 6px rgba(27,29,26,.06), 0 18px 40px -16px rgba(27,29,26,.18);
+  --maxw: 1120px;
+  --ease: cubic-bezier(.22,.61,.36,1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Noto Sans", system-ui, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+::selection { background: var(--mint); color: var(--green-ink); }
+
+.dekra-wordmark {
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--green);
+}
+
+/* QR */
+.qr { display: inline-flex; flex-direction: column; align-items: center; gap: 10px; }
+.qr-frame {
+  background: #fff; border-radius: var(--r-md); padding: 12px;
+  border: 1px solid var(--hairline); line-height: 0; color: var(--green-ink);
+}
+.qr-frame svg { display: block; width: 100%; height: 100%; }
+.qr-frame svg rect { fill: currentColor; }
+.qr-cap {
+  font-size: 10px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--muted);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 10px; white-space: nowrap;
+  font-family: inherit; font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
+  padding: 14px 26px; border-radius: 999px; cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform .2s var(--ease), background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease), box-shadow .25s var(--ease);
+}
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--green); color: #fff; box-shadow: 0 10px 24px -12px rgba(0,107,82,.8); }
+.btn-primary:hover { background: var(--green-deep); }
+.btn-ghost { background: transparent; color: var(--green-ink); border-color: var(--hairline); }
+.btn-ghost:hover { border-color: var(--green); background: color-mix(in srgb, var(--green) 8%, transparent); }
+
+/* Entrance animations */
+@media (prefers-reduced-motion: no-preference) {
+  html.anim-ready .rise {
+    opacity: 0; transform: translateY(22px);
+    animation: rise .9s var(--ease) forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  html.anim-ready .fade {
+    opacity: 0;
+    animation: fadein 1s var(--ease) forwards;
+    animation-delay: var(--d, 0ms);
+  }
+}
+@keyframes rise { to { opacity: 1; transform: none; } }
+@keyframes fadein { to { opacity: 1; } }
+@media print {
+  .rise, .fade { opacity: 1 !important; transform: none !important; animation: none !important; }
+}
+
+/* ── PROFILE CARD ── */
+.pf { padding: 0; }
+.pf-hero {
+  min-height: 100dvh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 40px 24px 0;
+  position: relative;
+  background:
+    radial-gradient(60% 50% at 50% 0%, color-mix(in srgb, var(--green) 8%, transparent) 0%, transparent 70%),
+    var(--bg);
+}
+.pf-card {
+  width: 100%; max-width: 940px; background: var(--surface);
+  border: 1px solid var(--hairline); border-radius: var(--r-xl);
+  box-shadow: var(--shadow-md); overflow: hidden;
+  display: grid; grid-template-columns: 300px 1fr;
+}
+
+/* Left rail */
+.pf-rail {
+  background: linear-gradient(160deg, var(--green-deep), var(--green));
+  color: #fff; padding: 38px 30px; display: flex; flex-direction: column;
+  align-items: center; gap: 20px; text-align: center;
+}
+.pf-rail .pf-name { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.01em; line-height: 1.1; }
+.pf-rail .pf-prime { font-size: 13px; opacity: .92; font-weight: 600; margin-top: 4px; }
+.pf-rail .pf-qr { margin-top: 6px; }
+.pf-rail .pf-qr .qr-frame { padding: 9px; color: var(--green-deep); }
+.pf-rail .pf-qr .qr-cap { color: rgba(255,255,255,.8); }
+
+/* ── Photo slot ── */
+.photo-slot {
+  position: relative;
+  width: 150px; height: 150px;
+  border-radius: 50%;
+  border: 4px solid rgba(255,255,255,.85);
+  box-shadow: 0 14px 30px -12px rgba(0,0,0,.4);
+  overflow: hidden;
+  background: rgba(255,255,255,.12);
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  flex-shrink: 0;
+}
+.photo-slot img {
+  position: absolute;
+  max-width: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  pointer-events: none;
+}
+.photo-slot .photo-overlay {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 4px;
+  background: rgba(0,0,0,.4);
+  opacity: 0; transition: opacity .2s var(--ease);
+  color: #fff; font-size: 10px; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase;
+  pointer-events: none;
+}
+.photo-slot .photo-overlay svg { opacity: .9; }
+.photo-slot:hover .photo-overlay,
+.photo-slot[data-dragover] .photo-overlay { opacity: 1; }
+.photo-slot[data-reframe] .photo-overlay { opacity: 0 !important; }
+.photo-slot[data-reframe] { cursor: grab; }
+.photo-slot[data-panning] { cursor: grabbing; }
+.photo-slot .photo-controls {
+  position: absolute; bottom: -36px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 4px; z-index: 3;
+  opacity: 0; pointer-events: none;
+  transition: opacity .15s var(--ease);
+  white-space: nowrap;
+}
+.photo-slot:hover .photo-controls,
+.photo-slot[data-reframe] .photo-controls { opacity: 1; pointer-events: auto; }
+.photo-controls button {
+  appearance: none; border: 0; border-radius: 6px;
+  padding: 5px 10px; cursor: pointer;
+  background: rgba(0,0,0,.65); color: #fff;
+  font: 11px/1 "Noto Sans", system-ui, sans-serif;
+  backdrop-filter: blur(6px);
+}
+.photo-controls button:hover { background: rgba(0,0,0,.8); }
+
+/* Body */
+.pf-body { padding: 40px 42px; display: flex; flex-direction: column; }
+.pf-eyebrow { font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: var(--green); font-weight: 700; margin-bottom: 16px; }
+.pf-roles { display: flex; flex-direction: column; gap: 16px; margin-bottom: 22px; }
+.pf-role { display: flex; gap: 13px; align-items: flex-start; }
+.pf-role .ic {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: color-mix(in srgb, var(--green) 8%, transparent);
+  display: grid; place-items: center; flex: none;
+  color: var(--green); font-weight: 800; font-size: 12px;
+}
+.pf-role .rcol { display: flex; flex-direction: column; gap: 2px; }
+.pf-role .rt { font-weight: 700; font-size: 15px; line-height: 1.3; }
+.pf-role .ro { color: var(--muted); font-size: 13.5px; line-height: 1.3; }
+.pf-tagline {
+  font-size: 1.02rem; line-height: 1.6; color: var(--ink-soft);
+  padding: 18px 0; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline);
+}
+.pf-contact { display: flex; flex-direction: column; gap: 2px; margin: 16px 0 22px; }
+.pf-crow { display: flex; align-items: center; gap: 14px; padding: 11px 0; }
+.pf-crow .ck { width: 70px; flex: none; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.pf-crow .cv { font-weight: 600; font-size: 14.5px; transition: color .2s var(--ease); }
+.pf-crow:hover .cv { color: var(--green); }
+.pf-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: auto; }
+
+/* ── Scroll indicator ── */
+.scroll-cue {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 28px 0 20px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color .2s var(--ease);
+  flex-shrink: 0;
+}
+.scroll-cue:hover { color: var(--green); }
+.scroll-cue span {
+  font-size: 10px; letter-spacing: .18em; text-transform: uppercase; font-weight: 600;
+}
+.scroll-cue svg {
+  animation: bounce 2s var(--ease) infinite;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* Services section */
+.pf-section { max-width: var(--maxw); margin: 0 auto; padding: 84px 40px; }
+.pf-shead { text-align: center; margin-bottom: 44px; }
+.pf-shead .lab { font-size: 11px; letter-spacing: .26em; text-transform: uppercase; color: var(--green); font-weight: 700; }
+.pf-shead h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); font-weight: 800; letter-spacing: -0.02em; margin-top: 12px; }
+.pf-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.pf-svc {
+  background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-lg);
+  padding: 28px 24px;
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
+}
+.pf-svc:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: transparent; }
+.pf-svc .n {
+  width: 38px; height: 38px; border-radius: 10px;
+  background: color-mix(in srgb, var(--green) 8%, transparent);
+  color: var(--green); display: grid; place-items: center;
+  font-weight: 800; font-size: 13px; margin-bottom: 18px;
+  transition: background .25s var(--ease), color .25s var(--ease);
+}
+.pf-svc:hover .n { background: var(--green); color: #fff; }
+.pf-svc h3 { font-size: 1.08rem; font-weight: 700; margin-bottom: 9px; letter-spacing: -0.01em; }
+.pf-svc p { font-size: 14px; line-height: 1.6; color: var(--muted); }
+
+/* Philosophy band */
+.pf-band { background: var(--green); color: #fff; padding: 80px 40px; }
+.pf-band .inner { max-width: 820px; margin: 0 auto; text-align: center; }
+.pf-band .lab { font-size: 11px; letter-spacing: .26em; text-transform: uppercase; color: var(--mint); font-weight: 700; margin-bottom: 24px; }
+.pf-band p { font-size: clamp(1.6rem, 3.4vw, 2.7rem); font-weight: 700; line-height: 1.28; letter-spacing: -0.01em; }
+.pf-band p em { font-style: normal; color: var(--mint); }
+
+/* Footer */
+.pf-footer {
+  max-width: var(--maxw); margin: 0 auto; padding: 30px 40px;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+}
+.pf-footer p { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — TABLET
+   ═══════════════════════════════════════════ */
+@media (max-width: 820px) {
+  .pf-card { grid-template-columns: 1fr; }
+  .pf-rail {
+    flex-direction: row; flex-wrap: wrap; justify-content: center;
+    padding: 30px; gap: 16px;
+  }
+  .pf-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — MOBILE
+   ═══════════════════════════════════════════ */
+@media (max-width: 560px) {
+  .pf-hero {
+    padding: 24px 14px 0;
+    min-height: 100dvh;
+  }
+  .pf-card {
+    border-radius: var(--r-lg);
+    max-width: 100%;
+  }
+  .pf-rail {
+    flex-direction: column; align-items: center;
+    padding: 28px 20px 24px; gap: 14px;
+  }
+  .photo-slot { width: 110px; height: 110px; }
+  .pf-rail .pf-name { font-size: 1.25rem; }
+  .pf-rail .pf-prime { font-size: 12px; }
+  .pf-rail .pf-qr .qr-frame { padding: 7px; }
+
+  .pf-body { padding: 24px 18px; }
+  .pf-eyebrow { font-size: 10px; margin-bottom: 12px; }
+  .pf-roles { gap: 12px; margin-bottom: 16px; }
+  .pf-role .rt { font-size: 14px; }
+  .pf-role .ro { font-size: 12.5px; }
+  .pf-tagline { font-size: .92rem; padding: 14px 0; }
+
+  .pf-crow { gap: 10px; padding: 9px 0; }
+  .pf-crow .ck { width: 56px; font-size: 9px; letter-spacing: .12em; }
+  .pf-crow .cv { font-size: 13px; word-break: break-all; }
+  .pf-contact { margin: 12px 0 18px; }
+
+  .pf-actions { flex-direction: column; gap: 10px; }
+  .pf-actions .btn { width: 100%; justify-content: center; padding: 14px 20px; }
+
+  .scroll-cue { padding: 20px 0 14px; }
+  .scroll-cue span { font-size: 9px; }
+
+  .pf-section { padding: 52px 16px; }
+  .pf-shead { margin-bottom: 28px; }
+  .pf-grid { grid-template-columns: 1fr; gap: 14px; }
+  .pf-svc { padding: 22px 20px; }
+  .pf-svc h3 { font-size: 1rem; }
+  .pf-svc p { font-size: 13px; }
+
+  .pf-band { padding: 52px 20px; }
+  .pf-band p { font-size: clamp(1.3rem, 5vw, 1.8rem); }
+
+  .pf-footer {
+    padding: 24px 16px;
+    flex-direction: column; align-items: center; text-align: center;
+  }
+}
+
+/* Extra-small phones */
+@media (max-width: 380px) {
+  .pf-hero { padding: 16px 10px 0; }
+  .pf-rail { padding: 22px 16px 20px; }
+  .photo-slot { width: 96px; height: 96px; }
+  .pf-body { padding: 20px 14px; }
+  .pf-role .ic { width: 26px; height: 26px; font-size: 10px; border-radius: 6px; }
+  .pf-role { gap: 10px; }
+}
+</style>
+</head>
+<body>
+
+<div class="pf">
+  <!-- Hero card -->
+  <section class="pf-hero">
+    <div class="pf-card rise" style="--d: 60ms">
+      <aside class="pf-rail">
+        <div class="photo-slot" id="photo-slot">
+          <img id="photo-img" alt="Ionuț Marian Muntean" />
+          <div class="photo-overlay">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+            <span>Change photo</span>
+          </div>
+          <div class="photo-controls">
+            <button data-act="replace">Replace</button>
+            <button data-act="remove">Remove</button>
+          </div>
+          <input type="file" accept="image/png,image/jpeg,image/webp,image/avif" hidden id="photo-input" />
+        </div>
+        <div>
+          <div class="pf-name">Ionuț Marian Muntean</div>
+          <div class="pf-prime">Managing Director, DEKRA Romania</div>
+        </div>
+        <div class="pf-qr">
+          <div class="qr">
+            <div class="qr-frame" id="qr-target" style="width: 104px; height: 104px"></div>
+            <div class="qr-cap">Scan to connect</div>
+          </div>
+        </div>
+      </aside>
+
+      <div class="pf-body">
+        <div class="pf-eyebrow">Virtual Visit Card</div>
+        <div class="pf-roles">
+          <div class="pf-role">
+            <span class="ic">01</span>
+            <div class="rcol">
+              <span class="rt">Managing Director</span>
+              <span class="ro">DEKRA Romania</span>
+            </div>
+          </div>
+          <div class="pf-role">
+            <span class="ic">02</span>
+            <div class="rcol">
+              <span class="rt">Head of Audit Department</span>
+              <span class="ro">DEKRA Hungary</span>
+            </div>
+          </div>
+          <div class="pf-role">
+            <span class="ic">03</span>
+            <div class="rcol">
+              <span class="rt">Vice-President</span>
+              <span class="ro">Association of Future Mobility Romania</span>
+            </div>
+          </div>
+        </div>
+        <p class="pf-tagline">I help organizations prove they are safe, sustainable, and worthy of trust — before something goes wrong.</p>
+        <div class="pf-contact">
+          <a class="pf-crow" href="mailto:ionut.muntean@dekra.com">
+            <span class="ck">Email</span>
+            <span class="cv">ionut.muntean@dekra.com</span>
+          </a>
+          <a class="pf-crow" href="tel:+40721294666">
+            <span class="ck">Phone</span>
+            <span class="cv">+40 721 294 666</span>
+          </a>
+          <a class="pf-crow" href="https://www.linkedin.com/in/ionut-muntean-0a9a0650" target="_blank" rel="noopener">
+            <span class="ck">LinkedIn</span>
+            <span class="cv">/in/ionut-muntean</span>
+          </a>
+        </div>
+        <div class="pf-actions">
+          <a class="btn btn-primary" href="mailto:ionut.muntean@dekra.com">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            Email me
+          </a>
+          <a class="btn btn-ghost" href="https://www.linkedin.com/in/ionut-muntean-0a9a0650" target="_blank" rel="noopener">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 0 1 4 0v4M11 17v-7"/></svg>
+            Connect
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll cue -->
+    <a class="scroll-cue fade" style="--d: 800ms" href="#pf-services" aria-label="Scroll to services">
+      <span>What I do</span>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m6 9 6 6 6-6"/>
+      </svg>
+    </a>
+  </section>
+
+  <!-- Services -->
+  <section class="pf-section" id="pf-services">
+    <div class="pf-shead rise" style="--d: 100ms">
+      <div class="lab">What I do</div>
+      <h2>Turning standards into trust</h2>
+    </div>
+    <div class="pf-grid">
+      <div class="pf-svc rise" style="--d: 140ms">
+        <div class="n">01</div>
+        <h3>Management System Certification</h3>
+        <p>ISO 9001, 14001, 45001, 27001, 22000 and beyond. Turning your processes into internationally recognized credentials.</p>
+      </div>
+      <div class="pf-svc rise" style="--d: 200ms">
+        <div class="n">02</div>
+        <h3>Safety &amp; Industrial Inspection</h3>
+        <p>Rigorous technical inspections that catch problems before they become crises — protecting people, assets, and reputation.</p>
+      </div>
+      <div class="pf-svc rise" style="--d: 260ms">
+        <div class="n">03</div>
+        <h3>ESG &amp; Sustainability Auditing</h3>
+        <p>Helping organizations measure, verify, and communicate their environmental and social commitments credibly.</p>
+      </div>
+      <div class="pf-svc rise" style="--d: 320ms">
+        <div class="n">04</div>
+        <h3>Product Certification</h3>
+        <p>Market access requires proof. We certify products for European and international standards — opening doors.</p>
+      </div>
+      <div class="pf-svc rise" style="--d: 380ms">
+        <div class="n">05</div>
+        <h3>EU Accession Readiness</h3>
+        <p>Supporting Moldovan organizations in aligning with EU standards — certification as a strategic passport to European markets.</p>
+      </div>
+      <div class="pf-svc rise" style="--d: 440ms">
+        <div class="n">06</div>
+        <h3>Pre-Audit Consulting</h3>
+        <p>Preparation is everything. We help organizations close gaps before the official audit — maximizing confidence and results.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Philosophy band -->
+  <section class="pf-band">
+    <div class="inner rise" style="--d: 200ms">
+      <div class="lab">Philosophy</div>
+      <p>"Compliance is not a checkbox. <em>It's a competitive advantage.</em>"</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="pf-footer">
+    <p>&copy; 2026 Ionuț Marian Muntean</p>
+    <p><span class="dekra-wordmark">DEKRA</span> · Bucharest · Cluj · Budapest</p>
+  </footer>
+</div>
+
+<!-- QR code generator -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script>
+(function() {
+  // ── QR code ──
+  var target = document.getElementById('qr-target');
+  if (target && typeof qrcode === 'function') {
+    try {
+      var qr = qrcode(0, 'M');
+      qr.addData('https://www.linkedin.com/in/ionut-muntean-0a9a0650');
+      qr.make();
+      var n = qr.getModuleCount();
+      var ns = 'http://www.w3.org/2000/svg';
+      var svg = document.createElementNS(ns, 'svg');
+      svg.setAttribute('viewBox', '0 0 ' + n + ' ' + n);
+      svg.setAttribute('width', 104);
+      svg.setAttribute('height', 104);
+      svg.setAttribute('shape-rendering', 'crispEdges');
+      for (var r = 0; r < n; r++) {
+        for (var c = 0; c < n; c++) {
+          if (qr.isDark(r, c)) {
+            var rect = document.createElementNS(ns, 'rect');
+            rect.setAttribute('x', c);
+            rect.setAttribute('y', r);
+            rect.setAttribute('width', 1.02);
+            rect.setAttribute('height', 1.02);
+            svg.appendChild(rect);
+          }
+        }
+      }
+      target.appendChild(svg);
+    } catch (e) {
+      target.textContent = 'QR';
+    }
+  }
+
+  // ── Entrance animations ──
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (!document.hidden) {
+      document.documentElement.classList.add('anim-ready');
+    } else {
+      document.addEventListener('visibilitychange', function handler() {
+        if (!document.hidden) {
+          document.documentElement.classList.add('anim-ready');
+          document.removeEventListener('visibilitychange', handler);
+        }
+      });
+    }
+  }
+
+  // ── Scroll-cue: hide after user scrolls past hero ──
+  var cue = document.querySelector('.scroll-cue');
+  if (cue) {
+    var hidden = false;
+    window.addEventListener('scroll', function() {
+      if (hidden) return;
+      if (window.scrollY > window.innerHeight * 0.3) {
+        cue.style.opacity = '0';
+        cue.style.pointerEvents = 'none';
+        hidden = true;
+      }
+    }, { passive: true });
+  }
+
+  // ═══════════════════════════════════════════
+  // PHOTO SLOT — replace, crop, pan
+  // ═══════════════════════════════════════════
+  var FALLBACK_SRC = 'data:image/webp;base64,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';
+  var STORAGE_KEY = 'ionut-photo-state';
+  var MAX_DIM = 1200;
+  var MAX_SCALE = 5;
+
+  var slot = document.getElementById('photo-slot');
+  var img = document.getElementById('photo-img');
+  var input = document.getElementById('photo-input');
+
+  var state = {
+    src: null,
+    s: 1,
+    x: 0,
+    y: 0
+  };
+
+  // ── Persistence ──
+  function loadState() {
+    try {
+      var saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (saved) {
+        state.src = saved.src || null;
+        state.s = saved.s || 1;
+        state.x = saved.x || 0;
+        state.y = saved.y || 0;
+      }
+    } catch (e) {}
+  }
+
+  function saveState() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (e) {}
+  }
+
+  // ── Image rendering ──
+  function getActiveSrc() {
+    return state.src || FALLBACK_SRC;
+  }
+
+  function applyView() {
+    var src = getActiveSrc();
+    if (img.getAttribute('src') !== src) img.src = src;
+
+    var iw = img.naturalWidth || 1;
+    var ih = img.naturalHeight || 1;
+    var fw = slot.clientWidth || 1;
+    var fh = slot.clientHeight || 1;
+    var base = Math.max(fw / iw, fh / ih);
+    var k = base * state.s;
+
+    var pw = iw * k;
+    var ph = ih * k;
+    var left = (fw - pw) / 2 + (state.x / 100) * fw;
+    var top = (fh - ph) / 2 + (state.y / 100) * fh;
+
+    img.style.width = pw + 'px';
+    img.style.height = ph + 'px';
+    img.style.left = left + 'px';
+    img.style.top = top + 'px';
+  }
+
+  function clampView() {
+    var iw = img.naturalWidth || 1;
+    var ih = img.naturalHeight || 1;
+    var fw = slot.clientWidth || 1;
+    var fh = slot.clientHeight || 1;
+    var base = Math.max(fw / iw, fh / ih);
+
+    var mx = Math.max(0, (iw * base * state.s / fw - 1) * 50);
+    var my = Math.max(0, (ih * base * state.s / fh - 1) * 50);
+    state.x = Math.max(-mx, Math.min(mx, state.x));
+    state.y = Math.max(-my, Math.min(my, state.y));
+  }
+
+  // ── Downscale uploaded images ──
+  function toDataUrl(file) {
+    return createImageBitmap(file).then(function(bitmap) {
+      var cap = MAX_DIM;
+      var scale = Math.min(1, cap / Math.max(bitmap.width, bitmap.height));
+      var w = Math.max(1, Math.round(bitmap.width * scale));
+      var h = Math.max(1, Math.round(bitmap.height * scale));
+      var canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(bitmap, 0, 0, w, h);
+      if (bitmap.close) bitmap.close();
+      return canvas.toDataURL('image/webp', 0.85);
+    });
+  }
+
+  function ingest(file) {
+    var ok = ['image/png','image/jpeg','image/webp','image/avif'];
+    if (!file || ok.indexOf(file.type) < 0) return;
+    toDataUrl(file).then(function(url) {
+      state.src = url;
+      state.s = 1;
+      state.x = 0;
+      state.y = 0;
+      saveState();
+      applyView();
+    });
+  }
+
+  // ── Events: click to browse ──
+  slot.addEventListener('click', function(e) {
+    if (e.target.closest('.photo-controls')) return;
+    if (slot.hasAttribute('data-reframe')) return;
+    input.click();
+  });
+  input.addEventListener('change', function() {
+    if (input.files && input.files[0]) ingest(input.files[0]);
+    input.value = '';
+  });
+
+  // ── Events: drag & drop ──
+  var depth = 0;
+  slot.addEventListener('dragenter', function(e) {
+    e.preventDefault(); e.stopPropagation();
+    if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
+    depth++;
+    slot.setAttribute('data-dragover', '');
+  });
+  slot.addEventListener('dragover', function(e) {
+    e.preventDefault(); e.stopPropagation();
+    if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
+  });
+  slot.addEventListener('dragleave', function(e) {
+    e.stopPropagation();
+    if (--depth <= 0) { depth = 0; slot.removeAttribute('data-dragover'); }
+  });
+  slot.addEventListener('drop', function(e) {
+    e.preventDefault(); e.stopPropagation();
+    depth = 0; slot.removeAttribute('data-dragover');
+    var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+    if (f) ingest(f);
+  });
+
+  // ── Events: double-click to enter reframe (crop/pan) mode ──
+  slot.addEventListener('dblclick', function(e) {
+    e.preventDefault();
+    if (slot.hasAttribute('data-reframe')) exitReframe();
+    else enterReframe();
+  });
+
+  var outsideHandler, escHandler;
+  function enterReframe() {
+    slot.setAttribute('data-reframe', '');
+    outsideHandler = function(e) {
+      if (slot.contains(e.target)) return;
+      exitReframe();
+    };
+    escHandler = function(e) {
+      if (e.key === 'Escape') exitReframe();
+    };
+    document.addEventListener('pointerdown', outsideHandler, true);
+    document.addEventListener('keydown', escHandler, true);
+  }
+  function exitReframe() {
+    slot.removeAttribute('data-reframe');
+    slot.removeAttribute('data-panning');
+    if (outsideHandler) document.removeEventListener('pointerdown', outsideHandler, true);
+    if (escHandler) document.removeEventListener('keydown', escHandler, true);
+    outsideHandler = escHandler = null;
+    saveState();
+  }
+
+  // ── Events: pan (drag inside reframe mode) ──
+  slot.addEventListener('pointerdown', function(e) {
+    if (e.button !== 0) return;
+    if (!slot.hasAttribute('data-reframe')) return;
+    e.preventDefault();
+    e.stopPropagation();
+    slot.setPointerCapture(e.pointerId);
+    slot.setAttribute('data-panning', '');
+
+    var fw = slot.clientWidth || 1;
+    var fh = slot.clientHeight || 1;
+    var startX = e.clientX, startY = e.clientY;
+    var ox = state.x, oy = state.y;
+
+    function move(ev) {
+      state.x = ox + (ev.clientX - startX) / fw * 100;
+      state.y = oy + (ev.clientY - startY) / fh * 100;
+      clampView();
+      applyView();
+    }
+    function up() {
+      try { slot.releasePointerCapture(e.pointerId); } catch(err) {}
+      slot.removeAttribute('data-panning');
+      slot.removeEventListener('pointermove', move);
+      slot.removeEventListener('pointerup', up);
+      slot.removeEventListener('pointercancel', up);
+      saveState();
+    }
+    slot.addEventListener('pointermove', move);
+    slot.addEventListener('pointerup', up);
+    slot.addEventListener('pointercancel', up);
+  });
+
+  // ── Events: wheel zoom ──
+  slot.addEventListener('wheel', function(e) {
+    if (!slot.hasAttribute('data-reframe')) return;
+    e.preventDefault();
+    var prev = state.s;
+    var next = Math.max(1, Math.min(MAX_SCALE, prev * Math.pow(1.0015, -e.deltaY)));
+    if (next === prev) return;
+    state.s = next;
+    clampView();
+    applyView();
+    saveState();
+  }, { passive: false });
+
+  // ── Events: pinch-to-zoom (touch) ──
+  var lastPinchDist = 0;
+  slot.addEventListener('touchstart', function(e) {
+    if (e.touches.length === 2 && slot.hasAttribute('data-reframe')) {
+      e.preventDefault();
+      var dx = e.touches[0].clientX - e.touches[1].clientX;
+      var dy = e.touches[0].clientY - e.touches[1].clientY;
+      lastPinchDist = Math.hypot(dx, dy);
+    }
+  }, { passive: false });
+  slot.addEventListener('touchmove', function(e) {
+    if (e.touches.length === 2 && slot.hasAttribute('data-reframe')) {
+      e.preventDefault();
+      var dx = e.touches[0].clientX - e.touches[1].clientX;
+      var dy = e.touches[0].clientY - e.touches[1].clientY;
+      var dist = Math.hypot(dx, dy);
+      if (lastPinchDist > 0) {
+        var ratio = dist / lastPinchDist;
+        state.s = Math.max(1, Math.min(MAX_SCALE, state.s * ratio));
+        clampView();
+        applyView();
+      }
+      lastPinchDist = dist;
+    }
+  }, { passive: false });
+  slot.addEventListener('touchend', function() {
+    lastPinchDist = 0;
+    saveState();
+  });
+
+  // ── Events: control buttons ──
+  slot.querySelector('[data-act="replace"]').addEventListener('click', function(e) {
+    e.stopPropagation();
+    exitReframe();
+    input.click();
+  });
+  slot.querySelector('[data-act="remove"]').addEventListener('click', function(e) {
+    e.stopPropagation();
+    exitReframe();
+    state.src = null;
+    state.s = 1; state.x = 0; state.y = 0;
+    saveState();
+    applyView();
+  });
+
+  // ── Init ──
+  img.addEventListener('load', function() { clampView(); applyView(); });
+  loadState();
+  applyView();
+
+  new ResizeObserver(function() { clampView(); applyView(); }).observe(slot);
+})();
+</script>
+</body>
+</html>
