@@ -825,7 +825,7 @@ img { display: block; max-width: 100%; }
 
   // ── Init ──
   img.addEventListener('load', function() { clampView(); applyView(); });
-  loadState();
+  if (EDIT_MODE) loadState();
   applyView();
 
   new ResizeObserver(function() { clampView(); applyView(); }).observe(slot);
