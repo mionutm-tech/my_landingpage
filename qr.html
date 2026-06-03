@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>QR — Ionuț Marian Muntean Landing Page</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;800&display=swap" rel="stylesheet" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: #f7f3ec; font-family: "Noto Sans", system-ui, sans-serif;
+    color: #1b1d1a; padding: 40px 20px;
+  }
+  .card {
+    background: #fff; border-radius: 22px; padding: 48px 44px;
+    box-shadow: 0 2px 6px rgba(27,29,26,.06), 0 18px 40px -16px rgba(27,29,26,.18);
+    text-align: center; max-width: 360px; width: 100%;
+  }
+  .brand { font-weight: 800; letter-spacing: .04em; color: #008143; font-size: 14px; margin-bottom: 24px; }
+  #qr { margin: 0 auto 24px; }
+  #qr svg { display: block; }
+  #qr svg rect { fill: #02502f; }
+  .name { font-size: 1.15rem; font-weight: 800; letter-spacing: -.01em; margin-bottom: 4px; }
+  .role { font-size: 13px; color: #807c72; }
+  .url {
+    display: inline-block; margin-top: 20px; padding: 8px 18px;
+    background: color-mix(in srgb, #008143 8%, transparent);
+    border-radius: 999px; font-size: 12px; font-weight: 600;
+    color: #02502f; letter-spacing: .01em;
+  }
+  .hint {
+    margin-top: 20px; font-size: 10px; letter-spacing: .16em;
+    text-transform: uppercase; color: #807c72;
+  }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .card { box-shadow: none; border: 1px solid #eee; }
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="brand">DEKRA</div>
+  <div id="qr"></div>
+  <div class="name">Ionuț Marian Muntean</div>
+  <div class="role">Managing Director, DEKRA Romania</div>
+  <div class="url">my-landingpage-five.vercel.app</div>
+  <div class="hint">Scan to view my profile</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script>
+(function() {
+  var target = document.getElementById('qr');
+  if (!target || typeof qrcode !== 'function') return;
+  var qr = qrcode(0, 'M');
+  qr.addData('https://my-landingpage-five.vercel.app/');
+  qr.make();
+  var n = qr.getModuleCount();
+  var ns = 'http://www.w3.org/2000/svg';
+  var svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('viewBox', '0 0 ' + n + ' ' + n);
+  svg.setAttribute('width', 200);
+  svg.setAttribute('height', 200);
+  svg.setAttribute('shape-rendering', 'crispEdges');
+  for (var r = 0; r < n; r++) {
+    for (var c = 0; c < n; c++) {
+      if (qr.isDark(r, c)) {
+        var rect = document.createElementNS(ns, 'rect');
+        rect.setAttribute('x', c);
+        rect.setAttribute('y', r);
+        rect.setAttribute('width', 1.02);
+        rect.setAttribute('height', 1.02);
+        svg.appendChild(rect);
+      }
+    }
+  }
+  target.appendChild(svg);
+})();
+</script>
+</body>
+</html>
