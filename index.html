@@ -347,11 +347,65 @@ img { display: block; max-width: 100%; }
   .pf-role .ic { width: 26px; height: 26px; font-size: 10px; border-radius: 6px; }
   .pf-role { gap: 10px; }
 }
+
+/* ── Language switcher ── */
+.lang-switcher {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 5px 6px;
+  box-shadow: var(--shadow-sm);
+  transition: opacity .3s var(--ease);
+}
+.lang-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background .2s var(--ease), transform .15s var(--ease);
+  padding: 0;
+}
+.lang-btn:hover { background: var(--surface-2); transform: scale(1.08); }
+.lang-btn.active {
+  background: var(--green-wash);
+  box-shadow: inset 0 0 0 1.5px var(--green);
+}
+.lang-btn svg { display: block; border-radius: 3px; overflow: hidden; }
+
+@media (max-width: 560px) {
+  .lang-switcher { top: 12px; right: 12px; padding: 4px 5px; gap: 4px; }
+  .lang-btn { width: 28px; height: 28px; }
+  .lang-btn svg { width: 18px; height: 12px; }
+}
 </style>
 </head>
 <body>
 
 <div class="pf">
+  <!-- Language Switcher -->
+  <div class="lang-switcher" role="group" aria-label="Language">
+    <button class="lang-btn active" data-lang="en" title="English">
+      <svg width="22" height="15" viewBox="0 0 60 40"><rect width="60" height="40" fill="#012169"/><path d="M0 0L60 40M60 0L0 40" stroke="#fff" stroke-width="7"/><path d="M0 0L60 40M60 0L0 40" stroke="#C8102E" stroke-width="4"/><path d="M30 0v40M0 20h60" stroke="#fff" stroke-width="11"/><path d="M30 0v40M0 20h60" stroke="#C8102E" stroke-width="7"/></svg>
+    </button>
+    <button class="lang-btn" data-lang="de" title="Deutsch">
+      <svg width="22" height="15" viewBox="0 0 60 40"><rect width="60" height="13.33" fill="#000"/><rect y="13.33" width="60" height="13.33" fill="#DD0000"/><rect y="26.67" width="60" height="13.33" fill="#FFCC00"/></svg>
+    </button>
+    <button class="lang-btn" data-lang="ro" title="Română">
+      <svg width="22" height="15" viewBox="0 0 60 40"><rect width="20" height="40" fill="#002B7F"/><rect x="20" width="20" height="40" fill="#FCD116"/><rect x="40" width="20" height="40" fill="#CE1126"/></svg>
+    </button>
+  </div>
+
   <!-- Hero card -->
   <section class="pf-hero">
     <div class="pf-card rise" style="--d: 60ms">
@@ -360,82 +414,82 @@ img { display: block; max-width: 100%; }
           <img id="photo-img" alt="Ionuț Marian Muntean" />
           <div class="photo-overlay">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-            <span>Change photo</span>
+            <span data-i18n="photo_change">Change photo</span>
           </div>
           <div class="photo-controls">
-            <button data-act="replace">Replace</button>
-            <button data-act="remove">Remove</button>
+            <button data-act="replace" data-i18n="photo_replace">Replace</button>
+            <button data-act="remove" data-i18n="photo_remove">Remove</button>
           </div>
           <input type="file" accept="image/png,image/jpeg,image/webp,image/avif" hidden id="photo-input" />
         </div>
         <div>
           <div class="pf-name">Ionuț Marian Muntean</div>
-          <div class="pf-prime">Managing Director, DEKRA Romania</div>
+          <div class="pf-prime" data-i18n="prime">Managing Director, DEKRA Romania</div>
         </div>
         <div class="pf-qr">
           <div class="qr">
             <div class="qr-frame" id="qr-target" style="width: 104px; height: 104px"></div>
-            <div class="qr-cap">Scan to connect</div>
+            <div class="qr-cap" data-i18n="qr_cap">Scan to connect</div>
           </div>
         </div>
       </aside>
 
       <div class="pf-body">
-        <div class="pf-eyebrow">Virtual Visit Card</div>
+        <div class="pf-eyebrow" data-i18n="eyebrow">Virtual Visit Card</div>
         <div class="pf-roles">
           <div class="pf-role">
             <span class="ic">01</span>
             <div class="rcol">
-              <span class="rt">Managing Director</span>
-              <span class="ro">DEKRA Romania</span>
+              <span class="rt" data-i18n="role1_title">Managing Director</span>
+              <span class="ro" data-i18n="role1_org">DEKRA Romania</span>
             </div>
           </div>
           <div class="pf-role">
             <span class="ic">02</span>
             <div class="rcol">
-              <span class="rt">Head of Audit Department</span>
-              <span class="ro">DEKRA Hungary</span>
+              <span class="rt" data-i18n="role2_title">Head of Audit Department</span>
+              <span class="ro" data-i18n="role2_org">DEKRA Hungary</span>
             </div>
           </div>
           <div class="pf-role">
             <span class="ic">03</span>
             <div class="rcol">
-              <span class="rt">Vice-President</span>
-              <span class="ro">Association of Future Mobility Romania</span>
+              <span class="rt" data-i18n="role3_title">Vice-President</span>
+              <span class="ro" data-i18n="role3_org">Association of Future Mobility Romania</span>
             </div>
           </div>
         </div>
-        <p class="pf-tagline">I help organizations prove they are safe, sustainable, and worthy of trust — before something goes wrong.</p>
+        <p class="pf-tagline" data-i18n="tagline">I help organizations prove they are safe, sustainable, and worthy of trust — before something goes wrong.</p>
         <div class="pf-contact">
           <a class="pf-crow" href="mailto:ionut.muntean@dekra.com">
-            <span class="ck">Email</span>
+            <span class="ck" data-i18n="lbl_email">Email</span>
             <span class="cv">ionut.muntean@dekra.com</span>
           </a>
           <a class="pf-crow" href="tel:+40721294666">
-            <span class="ck">Phone</span>
+            <span class="ck" data-i18n="lbl_phone">Phone</span>
             <span class="cv">+40 721 294 666</span>
           </a>
           <a class="pf-crow" href="https://www.linkedin.com/in/ionut-muntean-0a9a0650" target="_blank" rel="noopener">
-            <span class="ck">LinkedIn</span>
+            <span class="ck" data-i18n="lbl_linkedin">LinkedIn</span>
             <span class="cv">/in/ionut-muntean</span>
           </a>
         </div>
         <div class="pf-actions">
           <a class="btn btn-primary" href="mailto:ionut.muntean@dekra.com">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
-            Email me
+            <span data-i18n="btn_email">Email me</span>
           </a>
           <a class="btn btn-ghost" href="https://www.linkedin.com/in/ionut-muntean-0a9a0650" target="_blank" rel="noopener">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 0 1 4 0v4M11 17v-7"/></svg>
-            Connect
+            <span data-i18n="btn_connect">Connect</span>
           </a>
         </div>
       </div>
     </div>
 
     <!-- Scroll cue -->
-    <a class="scroll-cue fade" style="--d: 800ms" href="#pf-services" aria-label="Scroll to services">
-      <span>What I do</span>
+    <a class="scroll-cue fade" style="--d: 800ms" href="#pf-services" data-i18n-aria="scroll_aria" aria-label="Scroll to services">
+      <span data-i18n="scroll_cue">What I do</span>
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="m6 9 6 6 6-6"/>
       </svg>
@@ -445,39 +499,39 @@ img { display: block; max-width: 100%; }
   <!-- Services -->
   <section class="pf-section" id="pf-services">
     <div class="pf-shead rise" style="--d: 100ms">
-      <div class="lab">What I do</div>
-      <h2>Supporting your compliance journey</h2>
+      <div class="lab" data-i18n="svc_lab">What I do</div>
+      <h2 data-i18n="svc_heading">Supporting your compliance journey</h2>
     </div>
     <div class="pf-grid">
       <div class="pf-svc rise" style="--d: 140ms">
         <div class="n">01</div>
-        <h3>Safety &amp; Industrial Inspection</h3>
-        <p>Thorough technical inspections that identify issues before they escalate — protecting your people, assets, and reputation.</p>
+        <h3 data-i18n="svc1_title">Safety &amp; Industrial Inspection</h3>
+        <p data-i18n="svc1_desc">Thorough technical inspections that identify issues before they escalate — protecting your people, assets, and reputation.</p>
       </div>
       <div class="pf-svc rise" style="--d: 200ms">
         <div class="n">02</div>
-        <h3>Automotive Inspection, Audit &amp; Advisory</h3>
-        <p>Tailored inspections for leading carmakers, NSCs, and OEMs — from end-of-term vehicle assessments to quality and standards audits across the automotive network.</p>
+        <h3 data-i18n="svc2_title">Automotive Inspection, Audit &amp; Advisory</h3>
+        <p data-i18n="svc2_desc">Tailored inspections for leading carmakers, NSCs, and OEMs — from end-of-term vehicle assessments to quality and standards audits across the automotive network.</p>
       </div>
       <div class="pf-svc rise" style="--d: 260ms">
         <div class="n">03</div>
-        <h3>Training &amp; Advisory</h3>
-        <p>Building internal capability that lasts. We equip your teams with the knowledge and practical tools to own compliance — not just achieve it.</p>
+        <h3 data-i18n="svc3_title">Training &amp; Advisory</h3>
+        <p data-i18n="svc3_desc">Building internal capability that lasts. We equip your teams with the knowledge and practical tools to own compliance — not just achieve it.</p>
       </div>
       <div class="pf-svc rise" style="--d: 320ms">
         <div class="n">04</div>
-        <h3>Management System Certification</h3>
-        <p>ISO 9001, 14001, 45001, 27001, 22000 and beyond — transforming your processes into internationally recognized credentials.</p>
+        <h3 data-i18n="svc4_title">Management System Certification</h3>
+        <p data-i18n="svc4_desc">ISO 9001, 14001, 45001, 27001, 22000 and beyond — transforming your processes into internationally recognized credentials.</p>
       </div>
       <div class="pf-svc rise" style="--d: 380ms">
         <div class="n">05</div>
-        <h3>ESG &amp; Sustainability Auditing</h3>
-        <p>Helping organizations measure, verify, and communicate their environmental and social commitments with credibility.</p>
+        <h3 data-i18n="svc5_title">ESG &amp; Sustainability Auditing</h3>
+        <p data-i18n="svc5_desc">Helping organizations measure, verify, and communicate their environmental and social commitments with credibility.</p>
       </div>
       <div class="pf-svc rise" style="--d: 440ms">
         <div class="n">06</div>
-        <h3>Product Certification</h3>
-        <p>Market access requires proof. We certify products against European and international standards — opening the doors you need.</p>
+        <h3 data-i18n="svc6_title">Product Certification</h3>
+        <p data-i18n="svc6_desc">Market access requires proof. We certify products against European and international standards — opening the doors you need.</p>
       </div>
     </div>
   </section>
@@ -485,15 +539,15 @@ img { display: block; max-width: 100%; }
   <!-- Philosophy band -->
   <section class="pf-band">
     <div class="inner rise" style="--d: 200ms">
-      <div class="lab">Philosophy</div>
-      <p>"Compliance is not a checkbox. <em>It's a competitive advantage.</em>"</p>
+      <div class="lab" data-i18n="phil_lab">Philosophy</div>
+      <p data-i18n-html="phil_quote">"Compliance is not a checkbox. <em>It's a competitive advantage.</em>"</p>
     </div>
   </section>
 
   <!-- Footer -->
   <footer class="pf-footer">
     <p>&copy; 2026 Ionuț Marian Muntean</p>
-    <p><span class="dekra-wordmark">DEKRA</span> · Bucharest · Cluj · Brașov · Budapest</p>
+    <p data-i18n-html="footer_loc"><span class="dekra-wordmark">DEKRA</span> · Bucharest · Cluj · Brașov · Budapest</p>
   </footer>
 </div>
 
@@ -829,6 +883,172 @@ img { display: block; max-width: 100%; }
   applyView();
 
   new ResizeObserver(function() { clampView(); applyView(); }).observe(slot);
+})();
+
+// ── i18n Language Switcher ──
+(function() {
+  var T = {
+    en: {
+      prime: "Managing Director, DEKRA Romania",
+      eyebrow: "Virtual Visit Card",
+      role1_title: "Managing Director",
+      role1_org: "DEKRA Romania",
+      role2_title: "Head of Audit Department",
+      role2_org: "DEKRA Hungary",
+      role3_title: "Vice-President",
+      role3_org: "Association of Future Mobility Romania",
+      tagline: "I help organizations prove they are safe, sustainable, and worthy of trust — before something goes wrong.",
+      lbl_email: "Email",
+      lbl_phone: "Phone",
+      lbl_linkedin: "LinkedIn",
+      btn_email: "Email me",
+      btn_connect: "Connect",
+      qr_cap: "Scan to connect",
+      photo_change: "Change photo",
+      photo_replace: "Replace",
+      photo_remove: "Remove",
+      scroll_cue: "What I do",
+      scroll_aria: "Scroll to services",
+      svc_lab: "What I do",
+      svc_heading: "Supporting your compliance journey",
+      svc1_title: "Safety & Industrial Inspection",
+      svc1_desc: "Thorough technical inspections that identify issues before they escalate — protecting your people, assets, and reputation.",
+      svc2_title: "Automotive Inspection, Audit & Advisory",
+      svc2_desc: "Tailored inspections for leading carmakers, NSCs, and OEMs — from end-of-term vehicle assessments to quality and standards audits across the automotive network.",
+      svc3_title: "Training & Advisory",
+      svc3_desc: "Building internal capability that lasts. We equip your teams with the knowledge and practical tools to own compliance — not just achieve it.",
+      svc4_title: "Management System Certification",
+      svc4_desc: "ISO 9001, 14001, 45001, 27001, 22000 and beyond — transforming your processes into internationally recognized credentials.",
+      svc5_title: "ESG & Sustainability Auditing",
+      svc5_desc: "Helping organizations measure, verify, and communicate their environmental and social commitments with credibility.",
+      svc6_title: "Product Certification",
+      svc6_desc: "Market access requires proof. We certify products against European and international standards — opening the doors you need.",
+      phil_lab: "Philosophy",
+      phil_quote: "“Compliance is not a checkbox. <em>It’s a competitive advantage.</em>”",
+      footer_loc: '<span class="dekra-wordmark">DEKRA</span> · Bucharest · Cluj · Brașov · Budapest'
+    },
+    de: {
+      prime: "Geschäftsführer, DEKRA Rumänien",
+      eyebrow: "Virtuelle Visitenkarte",
+      role1_title: "Geschäftsführer",
+      role1_org: "DEKRA Rumänien",
+      role2_title: "Leiter der Auditabteilung",
+      role2_org: "DEKRA Ungarn",
+      role3_title: "Vizepräsident",
+      role3_org: "Verband für Zukunftsmobilität Rumänien",
+      tagline: "Ich helfe Organisationen nachzuweisen, dass sie sicher, nachhaltig und vertrauenswürdig sind — bevor etwas schiefgeht.",
+      lbl_email: "E-Mail",
+      lbl_phone: "Telefon",
+      lbl_linkedin: "LinkedIn",
+      btn_email: "E-Mail senden",
+      btn_connect: "Vernetzen",
+      qr_cap: "Scannen zum Vernetzen",
+      photo_change: "Foto ändern",
+      photo_replace: "Ersetzen",
+      photo_remove: "Entfernen",
+      scroll_cue: "Was ich tue",
+      scroll_aria: "Zu den Leistungen scrollen",
+      svc_lab: "Was ich tue",
+      svc_heading: "Ihr Partner auf dem Weg zur Compliance",
+      svc1_title: "Sicherheits- & Industrieinspektion",
+      svc1_desc: "Gründliche technische Inspektionen, die Probleme erkennen, bevor sie eskalieren — zum Schutz Ihrer Mitarbeiter, Anlagen und Ihres Rufs.",
+      svc2_title: "Fahrzeuginspektion, Audit & Beratung",
+      svc2_desc: "Maßgeschneiderte Inspektionen für führende Automobilhersteller, NSCs und OEMs — von Fahrzeugbewertungen bis hin zu Qualitäts- und Standardaudits im gesamten Automobilnetzwerk.",
+      svc3_title: "Schulung & Beratung",
+      svc3_desc: "Aufbau nachhaltiger interner Kompetenzen. Wir statten Ihre Teams mit dem Wissen und den praktischen Werkzeugen aus, um Compliance eigenständig zu leben — nicht nur zu erreichen.",
+      svc4_title: "Managementsystem-Zertifizierung",
+      svc4_desc: "ISO 9001, 14001, 45001, 27001, 22000 und darüber hinaus — Ihre Prozesse werden zu international anerkannten Referenzen.",
+      svc5_title: "ESG- & Nachhaltigkeitsaudit",
+      svc5_desc: "Wir helfen Organisationen, ihre ökologischen und sozialen Verpflichtungen glaubwürdig zu messen, zu verifizieren und zu kommunizieren.",
+      svc6_title: "Produktzertifizierung",
+      svc6_desc: "Marktzugang erfordert Nachweise. Wir zertifizieren Produkte nach europäischen und internationalen Standards — und öffnen Ihnen die Türen, die Sie brauchen.",
+      phil_lab: "Philosophie",
+      phil_quote: "„Compliance ist keine Pflichtübung. <em>Es ist ein Wettbewerbsvorteil.</em>“",
+      footer_loc: '<span class="dekra-wordmark">DEKRA</span> · Bukarest · Klausenburg · Kronstadt · Budapest'
+    },
+    ro: {
+      prime: "Director General, DEKRA România",
+      eyebrow: "Carte de vizită virtuală",
+      role1_title: "Director General",
+      role1_org: "DEKRA România",
+      role2_title: "Șef Departament Audit",
+      role2_org: "DEKRA Ungaria",
+      role3_title: "Vicepreședinte",
+      role3_org: "Asociația pentru Mobilitatea Viitorului din România",
+      tagline: "Ajut organizațiile să demonstreze că sunt sigure, sustenabile și demne de încredere — înainte ca ceva să meargă prost.",
+      lbl_email: "Email",
+      lbl_phone: "Telefon",
+      lbl_linkedin: "LinkedIn",
+      btn_email: "Trimite email",
+      btn_connect: "Conectare",
+      qr_cap: "Scanează pentru conectare",
+      photo_change: "Schimbă fotografia",
+      photo_replace: "Înlocuiește",
+      photo_remove: "Șterge",
+      scroll_cue: "Ce fac",
+      scroll_aria: "Derulează la servicii",
+      svc_lab: "Ce fac",
+      svc_heading: "Partenerul tău în drumul spre conformitate",
+      svc1_title: "Siguranță & Inspecție Industrială",
+      svc1_desc: "Inspecții tehnice riguroase care identifică problemele înainte de a escalada — protejând oamenii, activele și reputația dvs.",
+      svc2_title: "Inspecție Auto, Audit & Consultanță",
+      svc2_desc: "Inspecții personalizate pentru producători auto, NSC-uri și OEM-uri — de la evaluări de vehicule la audituri de calitate și standarde în rețeaua auto.",
+      svc3_title: "Training & Consultanță",
+      svc3_desc: "Construim competențe interne durabile. Echipăm echipele dvs. cu cunoștințele și instrumentele practice necesare pentru a gestiona conformitatea — nu doar a o atinge.",
+      svc4_title: "Certificare Sisteme de Management",
+      svc4_desc: "ISO 9001, 14001, 45001, 27001, 22000 și nu numai — transformăm procesele dvs. în credențiale recunoscute internațional.",
+      svc5_title: "Audit ESG & Sustenabilitate",
+      svc5_desc: "Ajutăm organizațiile să măsoare, să verifice și să comunice angajamentele lor de mediu și sociale cu credibilitate.",
+      svc6_title: "Certificare Produse",
+      svc6_desc: "Accesul pe piață necesită dovezi. Certificăm produsele conform standardelor europene și internaționale — deschizând ușile de care aveți nevoie.",
+      phil_lab: "Filozofie",
+      phil_quote: "„Conformitatea nu este o bifă pe o listă. <em>Este un avantaj competitiv.</em>”",
+      footer_loc: '<span class="dekra-wordmark">DEKRA</span> · București · Cluj · Brașov · Budapesta'
+    }
+  };
+
+  var LANG_KEY = 'pf-lang';
+  var btns = document.querySelectorAll('.lang-btn');
+
+  function setLang(lang) {
+    if (!T[lang]) lang = 'en';
+    var dict = T[lang];
+
+    document.documentElement.lang = lang;
+
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n');
+      if (dict[key] != null) el.textContent = dict[key];
+    });
+
+    document.querySelectorAll('[data-i18n-html]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n-html');
+      if (dict[key] != null) el.innerHTML = dict[key];
+    });
+
+    document.querySelectorAll('[data-i18n-aria]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n-aria');
+      if (dict[key] != null) el.setAttribute('aria-label', dict[key]);
+    });
+
+    btns.forEach(function(b) {
+      b.classList.toggle('active', b.getAttribute('data-lang') === lang);
+    });
+
+    try { localStorage.setItem(LANG_KEY, lang); } catch(e) {}
+  }
+
+  btns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      setLang(btn.getAttribute('data-lang'));
+    });
+  });
+
+  var saved = null;
+  try { saved = localStorage.getItem(LANG_KEY); } catch(e) {}
+  if (saved && T[saved]) {
+    setLang(saved);
+  }
 })();
 </script>
 </body>
